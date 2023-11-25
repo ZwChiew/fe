@@ -1,0 +1,29 @@
+[
+  {
+    "username": "chiew",
+    "password": "chiew",
+    "messages": [
+      "Welcome to the strata expert system, how can I help you today ?",
+      "Is it compulsory to enter financial reporting of our strata/condo site every month?",
+      "Yes, it is compulsory in order for COB to know the monthly income/expenses for the building. For all type of users, JMB/MC/Agent or Developer have to report their monthly financial reporting to COB.",
+      "Can maintenance and sinking funds combine into one accounting account/bank account?",
+      "No, maintenance and sinking fund have to be separated into two accounts",
+      "If I become a committee member, how long can I stay as a committee member?",
+      "Maximum is 3 years. This is if the owner wins on the yearly election process. If the member wants to stand for election on the 4th year, he will not be entitled as he have been a committee member for the past 3 years"
+    ]
+  },
+
+  {
+    "username": "yau",
+    "password": "yau",
+    "messages": [
+      "Welcome to the strata expert system, how can I help you today ?",
+      "Where do I key in my expenses and income in the accounting books?",
+      "All jmb/mc need to have their own record for accounting. High cost usually will get an accounting system or hire an accounting firm to manage their expenses.",
+      "How am i eligible to vote",
+      "In order for u to be eligible to vote, u need to ensure your unit have valid strata title and u are not a defaulter",
+      "If the house is under two owners (joint owners), who can and suppose to vote?",
+      "If house under two owners, main owner need to assign a proxy either himself or the other owner as the person who will vote."
+    ]
+  }
+]
