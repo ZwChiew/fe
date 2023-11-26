@@ -18,4 +18,26 @@ const Typewriter = ({ text, delay }) => {
   return <span>{currentText}</span>;
 };
 
-export default Typewriter;
+const TypingAnimation = () => {
+  const [dots, setDots] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prevDots) => (prevDots.length < 6 ? prevDots + "." : "."));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const stopAnimation = () => {
+    setDots("");
+  };
+
+  return (
+    <div>
+      <p>{dots}</p>
+    </div>
+  );
+};
+
+export { TypingAnimation, Typewriter };

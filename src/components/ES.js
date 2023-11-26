@@ -12,7 +12,7 @@ import { setGlobalState, useGlobalState } from "./context";
 import { db } from "../firebase-config";
 import { updateDoc, doc } from "firebase/firestore";
 import axios from "axios";
-import Typewriter from "./Typewritter";
+import { Typewriter, TypingAnimation } from "./Typewritter";
 
 export const ES = () => {
   let id = useGlobalState("userId")[0];
@@ -20,37 +20,43 @@ export const ES = () => {
   const [chat, setChat] = useState(historyChat[0]);
   const [Message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [typing, setIsTyping] = useState("");
+  const [prev, setPrev] = useState("");
+  const [typing, setTyping] = useState(false);
 
   useEffect(() => {
     setGlobalState("messages", chat);
     let newFields = { messages: chat };
     let userDoc = doc(db, "users", id);
-    updateDoc(userDoc, newFields);
+    //updateDoc(userDoc, newFields);
   }, [chat]);
 
   const handleSendMessage = async () => {
-    setIsTyping("Hello world");
-    // if (Message.trim() !== "") {
-    //   // Append the user message to newChat
-    //   setIsSending(true);
-    //   setChat((prevChat) => [...prevChat, Message]);
-    //   var myParams = {
-    //     data: Message,
-    //   };
-    //   await axios
-    //     .post("http://localhost:5000/api/query", myParams)
-    //     .then(function (response) {
-    //       let output1 = response.data;
-    //       setChat((prevChat) => [...prevChat, output1]);
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-    //   setMessage("");
-    //   // Simulate the chatbot response
-    //   setIsSending(false);
-    // }
+    setIsSending(true);
+    if (Message.trim() !== "") {
+      setTyping(true);
+      // Append the user message to newChat
+      if (prev.trim() !== "") {
+        setChat((prevChat) => [...prevChat, prev]);
+      }
+      setChat((prevChat) => [...prevChat, Message]);
+      var myParams = {
+        data: Message,
+      };
+      await axios
+        .post("http://localhost:5000/api/query", myParams)
+        .then(function (response) {
+          let output1 = response.data;
+          setTyping(false);
+          setPrev(output1);
+          //setChat((prevChat) => [...prevChat, output1]);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      setMessage("");
+      // Simulate the chatbot response
+      setIsSending(false);
+    }
   };
 
   return (
@@ -83,7 +89,7 @@ export const ES = () => {
                   maxWidth: "70%",
                   backgroundColor: index % 2 !== 0 ? "#2196F3" : "#f0f0f0",
                   color: index % 2 !== 0 ? "#fff" : "#000",
-                  padding: "10px",
+                  padding: "12px",
                   borderRadius: "10px",
                 }}
               >
@@ -94,25 +100,33 @@ export const ES = () => {
             </div>
           ))}
         </div>
-        {isTyping !== "" && (
+        {prev !== "" && (
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "flex-start",
               marginBottom: "30px",
             }}
           >
             <div
               style={{
                 maxWidth: "70%",
-                backgroundColor: "#2196F3",
-                color: "#fff",
-                padding: "10px",
+                backgroundColor: "#f0f0f0",
+                color: "#000",
+                padding: "12px",
                 borderRadius: "10px",
               }}
             >
               <Typography style={{ whiteSpace: "pre-line" }}>
-                <Typewriter text={"hello world"} delay={100} />
+                {prev !== "" ? (
+                  typing ? (
+                    <TypingAnimation></TypingAnimation>
+                  ) : (
+                    <Typewriter text={prev.replace(/\\n/g, "\n")} delay={20} />
+                  )
+                ) : (
+                  <></>
+                )}
               </Typography>
             </div>
           </div>
@@ -122,6 +136,7 @@ export const ES = () => {
             <TextField
               sx={{ marginTop: "80px", marginBottom: "20px" }}
               fullWidth
+              disabled={isSending}
               label="Type a message..."
               variant="outlined"
               value={Message}
