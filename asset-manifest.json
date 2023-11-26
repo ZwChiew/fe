@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/fe/static/css/main.f14a194e.css",
+    "main.js": "/fe/static/js/main.4c5c5446.js",
+    "static/js/988.f592f33e.chunk.js": "/fe/static/js/988.f592f33e.chunk.js",
+    "static/media/strata1.jpg": "/fe/static/media/strata1.fd7fb080603b1d06ceeb.jpg",
+    "static/media/Akta757_Pengurusan_Strata.pdf": "/fe/static/media/Akta757_Pengurusan_Strata.8609826f257448590ea0.pdf",
+    "static/media/Strata-Management-Act-757-English.pdf": "/fe/static/media/Strata-Management-Act-757-English.f566f3b020947ff307b9.pdf",
+    "static/media/strata2.jpg": "/fe/static/media/strata2.9530ec8a8e397732988a.jpg",
+    "static/media/strata3.jpg": "/fe/static/media/strata3.26352f89ab0125821a3d.jpg",
+    "static/media/pdfBM.png": "/fe/static/media/pdfBM.05530ffa3dbf78a86c28.png",
+    "static/media/pdfBI.png": "/fe/static/media/pdfBI.b213da554889971cde7f.png",
+    "static/media/user.png": "/fe/static/media/user.f8f96d51538cc807cb69.png",
+    "index.html": "/fe/index.html",
+    "main.f14a194e.css.map": "/fe/static/css/main.f14a194e.css.map",
+    "main.4c5c5446.js.map": "/fe/static/js/main.4c5c5446.js.map",
+    "988.f592f33e.chunk.js.map": "/fe/static/js/988.f592f33e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f14a194e.css",
+    "static/js/main.4c5c5446.js"
+  ]
+}
