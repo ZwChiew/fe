@@ -39,14 +39,13 @@ export const Activities = () => {
       <div style={{ display: "flex" }}>
         <Grid
           container
-          spacing={2}
-          justifyContent="left"
-          alignItems="left"
+          spacing={1.5}
           sx={{ minHeight: "100%" }}
           marginTop="70px"
         >
           {activityTypes.map((activityType, index) => (
             <Grid
+              sx={{ marginRight: "-50px" }}
               item
               xl={3}
               md={6}

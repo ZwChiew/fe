@@ -18,6 +18,7 @@ export const ES = () => {
   let id = useGlobalState("userId")[0];
   let historyChat = useGlobalState("messages");
   const [chat, setChat] = useState(historyChat[0]);
+  const [local, setLocal] = useState();
   const [Message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [prev, setPrev] = useState("");
@@ -27,7 +28,7 @@ export const ES = () => {
     setGlobalState("messages", chat);
     let newFields = { messages: chat };
     let userDoc = doc(db, "users", id);
-    //updateDoc(userDoc, newFields);
+    updateDoc(userDoc, newFields);
   }, [chat]);
 
   const handleSendMessage = async () => {
@@ -54,7 +55,6 @@ export const ES = () => {
           console.log(error);
         });
       setMessage("");
-      // Simulate the chatbot response
       setIsSending(false);
     }
   };

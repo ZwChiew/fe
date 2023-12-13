@@ -84,38 +84,6 @@ export const Home = () => {
             </CardContent>
           </Card>
         </Grid>{" "}
-        <Grid item xs={12} sm={6} md={4}>
-          <Card
-            sx={{
-              cursor: "pointer",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-            onClick={() => navigate("view_eng")}
-          >
-            <CardMedia
-              component="div"
-              sx={{
-                // 16:9
-                pt: "56.25%",
-              }}
-              image={img3}
-            />
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Typography gutterBottom variant="h5" component="h2">
-                User Manual
-              </Typography>
-              <Typography>
-                This user manual is designed to guide users on the types of
-                questions the Chatbot can handle and its capabilities. The
-                Chatbot is a computer program utilizing artificial intelligence
-                to provide answers to various inquiries and perform a range of
-                tasks.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
       </Grid>
     </Box>
   );
