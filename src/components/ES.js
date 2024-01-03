@@ -13,23 +13,28 @@ import { db } from "../firebase-config";
 import { updateDoc, doc } from "firebase/firestore";
 import axios from "axios";
 import { Typewriter, TypingAnimation } from "./Typewritter";
+import ErrorSnackbar from "./Snackbar";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 export const ES = () => {
   let id = useGlobalState("userId")[0];
   let historyChat = useGlobalState("messages");
   const [chat, setChat] = useState(historyChat[0]);
-  const [local, setLocal] = useState();
+  const [local, setLocal] = useState(historyChat[0]);
   const [Message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [prev, setPrev] = useState("");
   const [typing, setTyping] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {}, [isSending]);
 
   useEffect(() => {
     setGlobalState("messages", chat);
     let newFields = { messages: chat };
     let userDoc = doc(db, "users", id);
     updateDoc(userDoc, newFields);
-  }, [chat]);
+  }, [chat, id]);
 
   const handleSendMessage = async () => {
     setIsSending(true);
@@ -37,8 +42,9 @@ export const ES = () => {
       setTyping(true);
       // Append the user message to newChat
       if (prev.trim() !== "") {
-        setChat((prevChat) => [...prevChat, prev]);
+        setLocal((prevChat) => [...prevChat, prev]);
       }
+      setLocal((prevChat) => [...prevChat, Message]);
       setChat((prevChat) => [...prevChat, Message]);
       var myParams = {
         data: Message,
@@ -49,14 +55,35 @@ export const ES = () => {
           let output1 = response.data;
           setTyping(false);
           setPrev(output1);
-          //setChat((prevChat) => [...prevChat, output1]);
+          setChat((prevChat) => [...prevChat, output1]);
         })
         .catch(function (error) {
           console.log(error);
+          if (error.response.data.error) {
+            // Log the error message from the server
+            console.error("Server error message:", error.response.data.error);
+          } else {
+            console.error("Unexpected error:", error.message);
+          }
+          setError(true);
+          setChat((prevChat) => [...prevChat.slice(0, -1)]);
         });
       setMessage("");
       setIsSending(false);
     }
+  };
+
+  const [arrowAtBottom, setArrowAtBottom] = useState(true);
+
+  const handleArrowClick = () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth", // Optional: Add smooth scrolling
+    });
+
+    setTimeout(() => {
+      setArrowAtBottom(true);
+    }, 1000);
   };
 
   return (
@@ -76,8 +103,9 @@ export const ES = () => {
           Ask Anything
         </Typography>
         <div style={{ marginBottom: "30px" }}>
-          {chat.map((message, index) => (
+          {local.map((message, index) => (
             <div
+              key={index}
               style={{
                 display: "flex",
                 justifyContent: index % 2 !== 0 ? "flex-end" : "flex-start",
@@ -122,7 +150,7 @@ export const ES = () => {
                   typing ? (
                     <TypingAnimation></TypingAnimation>
                   ) : (
-                    <Typewriter text={prev.replace(/\\n/g, "\n")} delay={20} />
+                    <Typewriter text={prev.replace(/\\n/g, "\n")} delay={10} />
                   )
                 ) : (
                   <></>
@@ -161,6 +189,24 @@ export const ES = () => {
           </Grid>
         </Grid>
       </Paper>
+      {error && (
+        <ErrorSnackbar
+          message={"Chat engine offline, please refresh the page"}
+          c={"error"}
+        ></ErrorSnackbar>
+      )}
+
+      <IconButton
+        style={{
+          position: "fixed",
+          bottom: arrowAtBottom ? "20px" : "auto",
+          top: arrowAtBottom ? "auto" : "20px",
+          right: "20px",
+        }}
+        onClick={handleArrowClick}
+      >
+        <ArrowDownwardIcon />
+      </IconButton>
     </Container>
   );
 };

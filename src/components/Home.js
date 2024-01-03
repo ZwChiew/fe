@@ -4,14 +4,11 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import img1 from "../images/pdfBI.png";
 import img2 from "../images/pdfBM.png";
-import img3 from "../images/user.png";
 import { Box } from "@mui/material";
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 export const Home = () => {
   let navigate = useNavigate();

@@ -92,7 +92,7 @@ export const SigninPage = () => {
       );
     };
     getUsers();
-  }, []);
+  }, [userCollectionRef]);
 
   function delay(ms) {
     return new Promise((resolve) => {

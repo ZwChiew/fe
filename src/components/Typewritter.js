@@ -29,10 +29,6 @@ const TypingAnimation = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const stopAnimation = () => {
-    setDots("");
-  };
-
   return (
     <div>
       <p>{dots}</p>

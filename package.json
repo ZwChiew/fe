@@ -1,6 +1,6 @@
 {
-  "homepage": "http://ZwChiew.github.io/fe",
-  "name": "my-app",
+  "homepage": "http://ZwChiew.github.io/signin",
+  "name": "strata-chatbot",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -49,8 +49,9 @@ export const SinkingCal = () => {
     pa: "",
     paa: "",
     f3: "",
+    unitPAA: "sqm",
+    unitPA: "sqm",
   };
-  const err = "This is a required field";
   const [formData, setFormData] = useState(initialFormData);
   const [value, setValue] = useState("0.00");
 
@@ -66,10 +67,26 @@ export const SinkingCal = () => {
     setValue(0);
   };
 
+  const convertToSqm = (value, unit) => {
+    // Conversion factor from sqft to sqm
+    const sqftToSqmConversionFactor = 0.092903;
+
+    if (unit === "sqft") {
+      // Convert value to sqm
+      return (value * sqftToSqmConversionFactor).toFixed(2);
+    }
+
+    // If the unit is already in sqm, return the original value
+    return value;
+  };
+
   const handleClick = (e) => {
-    const { pa, paa, f3 } = formData;
+    console.log(formData);
+    const f3 = formData.f3;
+    const convertedPAA = convertToSqm(formData.paa, formData.unitPAA);
+    const convertedPA = convertToSqm(formData.pa, formData.unitPA);
     // Now you can use the calculated F1 value in your equation.
-    const result = (pa * 0.8 + paa * f3).toFixed(2);
+    const result = (convertedPA * 0.8 + convertedPAA * f3).toFixed(2);
     setValue(result);
   };
 
@@ -126,13 +143,20 @@ export const SinkingCal = () => {
           </Grid>
           <Grid item sm={4} xs={4}>
             <Autocomplete
-              defaultValue={"sqm"}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               fullWidth
               sx={myStyle}
+              value={formData.unitPA}
               disablePortal
               id="unitPA"
               options={unit}
               renderInput={(params) => <TextField {...params} label="unit" />}
+              onChange={(e, newValue) => {
+                setFormData({
+                  ...formData,
+                  unitPA: newValue ? newValue.value : "", // Set the selected value
+                });
+              }}
             />
           </Grid>
           <Grid item sm={8} xs={8}>
@@ -150,13 +174,20 @@ export const SinkingCal = () => {
           </Grid>
           <Grid item sm={4} xs={4}>
             <Autocomplete
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              value={formData.unitPAA}
               fullWidth
-              defaultValue={"sqm"}
               sx={myStyle}
               disablePortal
               id="unitPAA"
               options={unit}
               renderInput={(params) => <TextField {...params} label="unit" />}
+              onChange={(e, newValue) => {
+                setFormData({
+                  ...formData,
+                  unitPAA: newValue ? newValue.value : "", // Set the selected value
+                });
+              }}
             />
           </Grid>
           <Grid item sm={12} xs={12}>
@@ -206,7 +237,7 @@ export const SinkingCal = () => {
               Reset
             </Button>
           </Grid>
-          <Grid xs={10} sm={10}>
+          <Grid item xs={10} sm={10}>
             <div>
               <Typography
                 style={{ marginLeft: "13px", marginTop: "20px" }}
@@ -225,7 +256,7 @@ export const SinkingCal = () => {
               </Typography>
             </div>
           </Grid>
-          <Grid xs={2} sm={2} alignSelf="end" alignItems="flex-end">
+          <Grid item xs={2} sm={2} alignSelf="end" alignItems="flex-end">
             <ArrowBack
               sx={{
                 fontSize: "40px",

@@ -45,6 +45,8 @@ const myStyle = {
 export const MaintenanceCal = () => {
   let navigate = useNavigate();
   const initialFormData = {
+    unitPA: "sqm",
+    unitPAA: "sqm",
     pa: "",
     paa: "",
     f11: "", //lift
@@ -52,7 +54,6 @@ export const MaintenanceCal = () => {
     f2: "",
     f3: "",
   };
-  const err = "This is a required field";
   const [formData, setFormData] = useState(initialFormData);
   const [value, setValue] = useState("0.00");
 
@@ -81,11 +82,28 @@ export const MaintenanceCal = () => {
     setValue(0);
   };
 
+  const convertToSqm = (value, unit) => {
+    // Conversion factor from sqft to sqm
+    const sqftToSqmConversionFactor = 0.092903;
+
+    if (unit === "sqft") {
+      // Convert value to sqm
+      return (value * sqftToSqmConversionFactor).toFixed(2);
+    }
+
+    // If the unit is already in sqm, return the original value
+    return value;
+  };
+
   const handleClick = (e) => {
-    const { pa, paa, f2, f3 } = formData;
+    console.log(formData);
+    const f2 = formData.f2;
+    const f3 = formData.f3;
+    const convertedPAA = convertToSqm(formData.paa, formData.unitPAA);
+    const convertedPA = convertToSqm(formData.pa, formData.unitPA);
     computeF1();
     // Now you can use the calculated F1 value in your equation.
-    const result = (pa * F1 * f2 + paa * f3).toFixed(2);
+    const result = (convertedPA * F1 * f2 + convertedPAA * f3).toFixed(2);
     setValue(result);
   };
 
@@ -146,13 +164,20 @@ export const MaintenanceCal = () => {
           </Grid>
           <Grid item sm={4} xs={4}>
             <Autocomplete
-              defaultValue={"sqm"}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              value={formData.unitPA}
               fullWidth
               sx={myStyle}
               disablePortal
               id="unitPA"
               options={unit}
               renderInput={(params) => <TextField {...params} label="unit" />}
+              onChange={(e, newValue) => {
+                setFormData({
+                  ...formData,
+                  unitPA: newValue ? newValue.value : "", // Set the selected value
+                });
+              }}
             />
           </Grid>
           <Grid item sm={12} xs={12}>
@@ -216,13 +241,20 @@ export const MaintenanceCal = () => {
           </Grid>
           <Grid item sm={4} xs={4}>
             <Autocomplete
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               fullWidth
-              defaultValue={"sqm"}
+              value={formData.unitPAA}
               sx={myStyle}
               disablePortal
               id="unitPAA"
               options={unit}
               renderInput={(params) => <TextField {...params} label="unit" />}
+              onChange={(e, newValue) => {
+                setFormData({
+                  ...formData,
+                  unitPAA: newValue ? newValue.value : "", // Set the selected value
+                });
+              }}
             />
           </Grid>
           <Grid item sm={12} xs={12}>

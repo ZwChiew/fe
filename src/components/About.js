@@ -120,8 +120,8 @@ export const AboutPage = () => {
             <Typography variant="h5" gutterBottom sx={{ mt: 3 }}>
               Contact Us
             </Typography>
-            {sidebar.archives.map((archive) => (
-              <Grid container>
+            {sidebar.archives.map((archive, index) => (
+              <Grid container key={`${archive.title}-${index}-${archive.icon}`}>
                 <Grid item sm={2} xs={2} lg={1}>
                   <archive.icon style={{ color: "dodgerblue" }} />{" "}
                 </Grid>
@@ -139,12 +139,12 @@ export const AboutPage = () => {
             <Typography variant="h5" gutterBottom sx={{ mt: 3 }}>
               Social
             </Typography>
-            {sidebar.social.map((network) => (
+            {sidebar.social.map((network, map) => (
               <Link
                 display="block"
                 variant="body1"
                 href={network.url}
-                key={network.name}
+                key={`${network.url}`}
                 sx={{ mb: 0.5 }}
               >
                 <Stack direction="row" spacing={1} alignItems="center">

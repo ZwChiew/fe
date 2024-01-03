@@ -49,6 +49,7 @@ export const EditFormRule = () => {
 
     setGlobalState("EditingEntry", {});
     setGlobalState("loading", false);
+    setGlobalState("success", true);
     navigate("/KBMS");
   };
 

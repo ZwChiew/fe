@@ -7,6 +7,8 @@ import { setGlobalState } from "./context";
 import { db } from "../firebase-config";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import axios from "axios";
+import ErrorSnackbar from "./Snackbar";
+import { useGlobalState } from "./context";
 
 export const KBMS = () => {
   const columns = [
@@ -130,6 +132,18 @@ export const KBMS = () => {
     navigate("editRule");
   };
 
+  const [success] = useGlobalState("success");
+  useEffect(() => {
+    if (success) {
+      const timeoutId = setTimeout(() => {
+        setGlobalState("success", false);
+      }, 2000);
+
+      // Clear the timeout to avoid unnecessary state updates
+      return () => clearTimeout(timeoutId);
+    }
+  }, [success]);
+
   return (
     <Paper style={{ padding: "30px", marginTop: "60px" }}>
       <Grid container spacing={2}>
@@ -197,6 +211,12 @@ export const KBMS = () => {
           </Box>
         </div>
       </Grid>
+      {success && (
+        <ErrorSnackbar
+          message={"Database successfully updated"}
+          c={"success"}
+        ></ErrorSnackbar>
+      )}
     </Paper>
   );
 };

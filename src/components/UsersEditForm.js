@@ -4,7 +4,6 @@ import { setGlobalState, useGlobalState } from "./context";
 import { useState } from "react";
 import { db } from "../firebase-config";
 import { collection, updateDoc, doc, addDoc } from "firebase/firestore";
-import { useViewport } from "react-viewport-hooks";
 
 export const EditFormUser = () => {
   let entry = useGlobalState("EditingEntry")[0];
@@ -26,6 +25,7 @@ export const EditFormUser = () => {
     setGlobalState("loading", false);
     setGlobalState("EditingEntry", {});
     navigate("/users");
+    setGlobalState("success", true);
   };
 
   let navigate = useNavigate("");

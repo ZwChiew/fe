@@ -12,11 +12,6 @@ import { HowToVote, ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const unit = [
-  { label: "sqft", value: "sqft" },
-  { label: "sqm", value: "sqm" },
-];
-
 const myStyle = {
   "& label.Mui-focused": {
     color: "dodgerblue",
@@ -42,13 +37,18 @@ export const VotingCal = () => {
   const initialFormData = {
     a: "",
     b: "",
+    b1: "",
     c: "",
+    c1: "",
     d: "",
+    d1: "",
     e: "",
+    e1: "",
     f: "",
+    f1: "",
   };
   const StrataType = [{ id: "f", label: "Enter your strata unit size" }];
-  ["a", "b", "c", "d", "e"].forEach((id) => {
+  ["b", "c", "d", "e"].forEach((id) => {
     StrataType.push({
       id,
       label: `Enter type ${id.toUpperCase()} strata unit size (0 if none)`,
@@ -71,9 +71,11 @@ export const VotingCal = () => {
   };
 
   const handleClick = () => {
-    const { a, b, c, d, e, f } = formData;
+    console.log(formData);
+    const { a, b, b1, c, c1, d, d1, e, e1, f, f1 } = formData;
     // Now you can use the calculated F1 value in your equation.
-    const result = (a + b + c + d + e + f) / f;
+    let w = 100 / (b * b1 + c * c1 + d * d1 + e * e1 + f * f1);
+    const result = (a * w).toFixed(2);
     setValue(result);
   };
 
@@ -125,21 +127,55 @@ export const VotingCal = () => {
           <Grid item sx={12} xs={12} spacing={2}>
             <Tooltip
               placement="right"
-              title="enter size of all type of strata unit in your property"
+              title="enter size of all type of strata unit in your property in sqm"
             >
-              {StrataType.map((type) => (
+              <Grid container>
                 <Grid item sm={12} xs={12}>
                   <TextField
+                    key="a"
                     fullWidth
                     required
                     sx={myStyle}
                     style={{ marginTop: "15px" }}
-                    id={type.id}
-                    label={type.label}
+                    id="a"
+                    label="Please enter your unit size"
                     type="number"
-                    value={formData[type.id]}
+                    value={formData["a"]}
                     onChange={handleChange}
                   />
+                </Grid>
+                <Grid item sm={4} xs={4}></Grid>
+              </Grid>
+              {StrataType.map((type) => (
+                <Grid container spacing={2.0}>
+                  <Grid item sm={8} xs={8}>
+                    <TextField
+                      key={type.id}
+                      fullWidth
+                      required
+                      sx={myStyle}
+                      style={{ marginTop: "15px" }}
+                      id={type.id}
+                      label={type.label}
+                      type="number"
+                      value={formData[type.id]}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={4} sm={4}>
+                    <TextField
+                      key={`${type.id}1`}
+                      fullWidth
+                      required
+                      sx={myStyle}
+                      style={{ marginTop: "15px" }}
+                      id={`${type.id}1`}
+                      label="number of units"
+                      type="number"
+                      value={formData[`${type.id}1`]}
+                      onChange={handleChange}
+                    />
+                  </Grid>
                 </Grid>
               ))}{" "}
             </Tooltip>
@@ -177,7 +213,7 @@ export const VotingCal = () => {
               Reset
             </Button>
           </Grid>
-          <Grid sm={10} xs={10}>
+          <Grid item sm={10} xs={10}>
             <div>
               <Typography
                 style={{ marginLeft: "13px", marginTop: "20px" }}
@@ -191,11 +227,11 @@ export const VotingCal = () => {
                 fontWeight="light"
                 fontStyle="italic"
               >
-                *Times with vote weightage
+                *For this unit size
               </Typography>
             </div>
           </Grid>
-          <Grid sm={2} xs={2} alignSelf="end" alignItems="end">
+          <Grid item sm={2} xs={2} alignSelf="end" alignItems="end">
             <ArrowBack
               sx={{
                 fontSize: "45px",

@@ -6,6 +6,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   userId: "",
   messages: [],
   EditingEntry: {},
+  success: false,
 });
 
 export { useGlobalState, setGlobalState };

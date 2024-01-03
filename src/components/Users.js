@@ -3,9 +3,10 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Paper, Button, Box, Typography, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { setGlobalState } from "./context";
+import { setGlobalState, useGlobalState } from "./context";
 import { db } from "../firebase-config";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import ErrorSnackbar from "./Snackbar";
 
 export const Users = () => {
   const columns = [
@@ -79,6 +80,18 @@ export const Users = () => {
   const [users, setUsers] = useState([]);
   let navigate = useNavigate();
   const userCollectionRef = collection(db, "users");
+  const [success] = useGlobalState("success");
+  useEffect(() => {
+    if (success) {
+      const timeoutId = setTimeout(() => {
+        setGlobalState("success", false);
+      }, 1000);
+
+      // Clear the timeout to avoid unnecessary state updates
+      return () => clearTimeout(timeoutId);
+    }
+  }, [success]);
+
   useEffect(() => {
     const getUsers = async () => {
       const data = await getDocs(userCollectionRef);
@@ -90,7 +103,7 @@ export const Users = () => {
       );
     };
     getUsers();
-  }, []);
+  }, [userCollectionRef]);
 
   const clickDelete = async (userId) => {
     try {
@@ -193,6 +206,12 @@ export const Users = () => {
           </Box>
         </div>
       </Grid>
+      {success && (
+        <ErrorSnackbar
+          message={"Database successfully updated"}
+          c={"success"}
+        ></ErrorSnackbar>
+      )}
     </Paper>
   );
 };
