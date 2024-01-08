@@ -17,6 +17,7 @@ import ErrorSnackbar from "./Snackbar";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 export const ES = () => {
+  const client = process.env.REACT_APP_CLIENT;
   let id = useGlobalState("userId")[0];
   let historyChat = useGlobalState("messages");
   const [chat, setChat] = useState(historyChat[0]);
@@ -50,7 +51,7 @@ export const ES = () => {
         data: Message,
       };
       await axios
-        .post("http://localhost:5000/api/query", myParams)
+        .post(`${client}/api/query`, myParams)
         .then(function (response) {
           let output1 = response.data;
           setTyping(false);

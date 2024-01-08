@@ -112,7 +112,7 @@ export const VotingCal = () => {
           </Grid>
           <Grid item sm={10} xs={10} alignItems="left">
             <Tooltip
-              title="Voting is directly proportional to size of unit"
+              title="Share Unit is directly proportional to size of unit"
               placement="right"
             >
               <Typography
@@ -120,7 +120,7 @@ export const VotingCal = () => {
                 color="dodgerblue"
                 sx={{ fontWeight: "bold" }}
               >
-                Voting Unit
+                Share Unit
               </Typography>
             </Tooltip>
           </Grid>
@@ -219,7 +219,7 @@ export const VotingCal = () => {
                 style={{ marginLeft: "13px", marginTop: "20px" }}
                 variant="h3"
               >
-                {value} votes <span style={{ fontSize: "small" }}>/unit</span>
+                {value} share <span style={{ fontSize: "small" }}>/units</span>
               </Typography>
               <Typography
                 style={{ marginLeft: "13px" }}

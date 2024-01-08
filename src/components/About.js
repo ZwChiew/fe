@@ -12,6 +12,30 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Typography, Divider, Paper, Link, Stack } from "@mui/material";
 
+// import { db } from "../firebase-config";
+// import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+// import { useEffect, useState } from "react";
+
+// export const AboutPage = () => {
+//   const [rules, setRules] = useState([]);
+//   const ruleCollectionRef = collection(db, "rules");
+//   useEffect(() => {
+//     const getRules = async () => {
+//       const data = await getDocs(ruleCollectionRef);
+//       console.log(data.docs[0].data());
+//       // setRules(
+//       //   data.docs.map((doc) => ({
+//       //     ...doc.data(),
+//       //     id: doc.id,
+//       //   }))
+//       // );
+//     };
+//     getRules();
+//   }, []);
+
+//   return <>Hello World</>;
+// };
+
 export const AboutPage = () => {
   const sidebar = {
     title: "Our services",
@@ -109,7 +133,7 @@ export const AboutPage = () => {
                   <br />
                   &#x2022; Interactive PDF Chat
                   <br />
-                  &#x2022; Voting Allocation
+                  &#x2022; Share Unit Allocation
                   <br />
                   &#x2022; Fees Estimations
                   <br />
@@ -160,7 +184,9 @@ export const AboutPage = () => {
           sx={{ marginTop: "50px" }}
           variant="contained"
           color="primary"
-          onClick={() => window.open("https://www.google.com", "_blank")}
+          onClick={() =>
+            window.open("https://forms.gle/2kf7wXXU1T8FC2NY9", "_blank")
+          }
         >
           Provide Feedback
         </Button>

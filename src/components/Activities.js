@@ -21,7 +21,7 @@ export const Activities = () => {
     {
       id: "voting",
       bgcolor: "dodgerBlue",
-      label: "Voting Polls",
+      label: "Share Units",
       icon: HowToVote,
     },
   ];

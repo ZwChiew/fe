@@ -7,6 +7,7 @@ import { collection, updateDoc, doc, addDoc } from "firebase/firestore";
 import axios from "axios";
 
 export const EditFormRule = () => {
+  const client = process.env.REACT_APP_CLIENT;
   let entry = useGlobalState("EditingEntry")[0];
   const [formData, setFormData] = useState(entry);
   const [messages, setMessages] = useState(formData.dataset.join("\n\n"));
@@ -38,7 +39,7 @@ export const EditFormRule = () => {
       data: "KB Updated",
     };
     await axios
-      .post("http://localhost:5000/api/noti", myParams)
+      .post(`${client}/api/noti`, myParams)
       .then(function (response) {
         let output = response.data;
         console.log(output);
