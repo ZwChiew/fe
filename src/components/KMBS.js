@@ -103,6 +103,7 @@ export const KBMS = () => {
         .post(`${client}/api/noti`, myParams)
         .then(function (response) {
           let output = response.data;
+          setSucess(true);
           console.log(output);
         })
         .catch(function (error) {
@@ -133,12 +134,12 @@ export const KBMS = () => {
     navigate("editRule");
   };
 
-  const [success] = useGlobalState("success");
+  const [success, setSucess] = useGlobalState("success");
   useEffect(() => {
     if (success) {
       const timeoutId = setTimeout(() => {
         setGlobalState("success", false);
-      }, 2000);
+      }, 8000);
 
       // Clear the timeout to avoid unnecessary state updates
       return () => clearTimeout(timeoutId);

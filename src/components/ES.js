@@ -24,11 +24,16 @@ export const ES = () => {
   const [local, setLocal] = useState(historyChat[0]);
   const [Message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [beg, setBeg] = useState(true);
   const [prev, setPrev] = useState("");
   const [typing, setTyping] = useState(false);
   const [error, setError] = useState(false);
+  const [errMes, seterrMes] = useState("Backend offline");
+  const [empty, setEmpty] = useState(true);
 
-  useEffect(() => {}, [isSending]);
+  useEffect(() => {
+    setEmpty(Message.trim() === "");
+  }, [Message]);
 
   useEffect(() => {
     setGlobalState("messages", chat);
@@ -53,16 +58,21 @@ export const ES = () => {
       await axios
         .post(`${client}/api/query`, myParams)
         .then(function (response) {
-          let output1 = response.data;
+          let output1 = response?.data;
           setTyping(false);
           setPrev(output1);
+          setBeg(false);
           setChat((prevChat) => [...prevChat, output1]);
+          setIsSending(false);
         })
         .catch(function (error) {
           console.log(error);
-          if (error.response.data.error) {
+          setBeg(false);
+          setPrev("");
+          if (error.response?.data.error) {
             // Log the error message from the server
-            console.error("Server error message:", error.response.data.error);
+            console.error("Server error message:", error.response.data?.error);
+            seterrMes(error.response?.data.error);
           } else {
             console.error("Unexpected error:", error.message);
           }
@@ -70,7 +80,6 @@ export const ES = () => {
           setChat((prevChat) => [...prevChat.slice(0, -1)]);
         });
       setMessage("");
-      setIsSending(false);
     }
   };
 
@@ -129,7 +138,7 @@ export const ES = () => {
             </div>
           ))}
         </div>
-        {prev !== "" && (
+        {(prev !== "" || beg) && (
           <div
             style={{
               display: "flex",
@@ -147,7 +156,7 @@ export const ES = () => {
               }}
             >
               <Typography style={{ whiteSpace: "pre-line" }}>
-                {prev !== "" ? (
+                {prev !== "" || beg ? (
                   typing ? (
                     <TypingAnimation></TypingAnimation>
                   ) : (
@@ -178,7 +187,7 @@ export const ES = () => {
               InputProps={{
                 endAdornment: (
                   <IconButton
-                    disabled={isSending}
+                    disabled={empty || isSending}
                     edge="end"
                     onClick={handleSendMessage}
                   >
@@ -192,7 +201,7 @@ export const ES = () => {
       </Paper>
       {error && (
         <ErrorSnackbar
-          message={"Chat engine offline, please refresh the page"}
+          message={`Chat engine offline, encountered error: ${errMes}. Please refresh the page`}
           c={"error"}
         ></ErrorSnackbar>
       )}

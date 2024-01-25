@@ -22,7 +22,7 @@ const ErrorSnackbar = ({ message, c }) => {
     <Snackbar
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       open={open}
-      autoHideDuration={2000}
+      autoHideDuration={8000}
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity={c} sx={{ width: "100%" }}>

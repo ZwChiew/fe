@@ -80,12 +80,12 @@ export const Users = () => {
   const [users, setUsers] = useState([]);
   let navigate = useNavigate();
   const userCollectionRef = collection(db, "users");
-  const [success] = useGlobalState("success");
+  const [success, setSucess] = useGlobalState("success");
   useEffect(() => {
     if (success) {
       const timeoutId = setTimeout(() => {
         setGlobalState("success", false);
-      }, 1000);
+      }, 8000);
 
       // Clear the timeout to avoid unnecessary state updates
       return () => clearTimeout(timeoutId);
@@ -94,6 +94,7 @@ export const Users = () => {
 
   useEffect(() => {
     const getUsers = async () => {
+      setGlobalState("loading", true);
       const data = await getDocs(userCollectionRef);
       setUsers(
         data.docs.map((doc) => ({
@@ -101,9 +102,10 @@ export const Users = () => {
           id: doc.id,
         }))
       );
+      setGlobalState("loading", false);
     };
     getUsers();
-  }, [userCollectionRef]);
+  }, []);
 
   const clickDelete = async (userId) => {
     try {
@@ -113,6 +115,7 @@ export const Users = () => {
       // Update the users state by removing the deleted user
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
       setGlobalState("loading", false);
+      setSucess(true);
     } catch (error) {
       console.error("Error deleting user:", error);
     }

@@ -29,18 +29,18 @@ const newUser = {
 export function Demo() {
   const [users, setUsers] = useState([]);
   const userCollectionRef = collection(db, "users");
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(userCollectionRef);
-      setUsers(
-        data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-      );
-    };
-    getUsers();
-  }, []);
+  // useEffect(() => {
+  //   const getUsers = async () => {
+  //     const data = await getDocs(userCollectionRef);
+  //     setUsers(
+  //       data.docs.map((doc) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       }))
+  //     );
+  //   };
+  //   getUsers();
+  // }, []);
 
   const createUser = async () => {
     await addDoc(userCollectionRef, newUser);
